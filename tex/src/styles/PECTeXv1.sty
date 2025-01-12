@@ -1,0 +1,196 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/PECTeXv1}[2025/01/11 Configuració PACEST Estudiant]
+
+% Paquets necessaris
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds,shadows}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{tcolorbox} % Per caixes visuals si cal
+\usepackage{xparse}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{tocloft}
+\usepackage[hidelinks,linktoc=all]{hyperref}
+\usepackage{cleveref}
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% Configuració de colors
+\definecolor{celeste}{rgb}{0.68, 0.85, 0.9}
+\definecolor{gris}{gray}{0.8}
+\definecolor{background}{rgb}{0.95, 0.95, 0.95}
+\definecolor{keyword}{rgb}{0.8, 0.4, 0.0}
+\definecolor{comment}{rgb}{0.1, 0.4, 0.2}
+\definecolor{string}{rgb}{0.0, 0.4, 0.1}
+\definecolor{symbol}{rgb}{0.3, 0.1, 0.4}
+\definecolor{number}{rgb}{0.0, 0.0, 0.8}
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+% Configuració bàsica del package utilitzats
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%% Listings
+\lstset{
+	backgroundcolor=\color{background}, % Fons del codi
+	basicstyle=\ttfamily\footnotesize, % Font i mida bàsica
+	keywordstyle=\color{keyword}\bfseries, % Paraules clau
+	commentstyle=\color{comment}\itshape, % Comentaris
+	stringstyle=\color{string}, % Strings
+	numberstyle=\tiny\color{gray}, % Estil dels números de línia
+	numbers=left, % Números de línia a l'esquerra
+	frame=single, % Marc simple
+	tabsize=4, % Amplada dels tabuladors
+	breaklines=true, % Trencament de línies llargues
+	showstringspaces=false, % Espais dins de strings no visibles
+	escapeinside={(*@}{@*)}, % Text LaTeX dins del codi
+	literate=
+	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'Í}}1 {Ó}{{\'O}}1 {Ú}{{\'Ú}}1
+	{ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1,
+	keepspaces=true, % Preservar espais
+	captionpos=b, % Posició de la llegenda (bottom)
+	columns=flexible, % Columnes flexibles
+}
+
+% Llenguatges personalitzats
+\lstdefinelanguage{PECjava}{
+	language=Java,
+	morekeywords={String, Integer, int, char, Double, Boolean, ArrayList, return}, % Paraules clau afegides
+	morekeywords=[2]{main, println, System, out, in},
+	keywordstyle=\color{keyword}\bfseries,
+	keywordstyle=[2]\color{symbol}\bfseries,
+}
+
+\lstdefinelanguage{PEC-YAML}{
+	keywords={true, false, null, yes, no},
+	keywordstyle=\color{keyword}\bfseries,
+	basicstyle=\ttfamily\small,
+	comment=[l]{\#},
+	commentstyle=\color{comment}\itshape,
+	stringstyle=\color{string},
+	morestring=[b]',
+	morestring=[b]",
+	sensitive=false,
+	literate=
+	{:}{{\color{red}:}}{1} {,}{{\color{red},}}{1} {[}{{\color{blue}[}}{1}
+	{]}{{\color{blue}]}}{1} {>}{{\color{purple}>}}{1} {|}{{\color{purple}|}}{1},
+	escapeinside={(/**@}{@*/},
+}
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%	Hyperref
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,          % Color dels enllaços interns (com TOC)
+	filecolor=magenta,       % Color per enllaços a fitxers
+	urlcolor=cyan,           % Color per URLs
+	citecolor=green,         % Color per cites
+	bookmarks=true,          % Incloure marcadors en el PDF
+	pdftitle={Títol del document}, % Títol del document
+	pdfauthor={Autor del document}, % Autor del document
+	pdfsubject={Tema del document}, % Tema del document
+	pdfkeywords={Paraules clau}, % Paraules clau per a la cerca
+}
+
+%-----------------------------------------
+% Definicions de comandes auxiliars de PECTeX.cls 
+%-----------------------------------------
+% Comandes per capçalera i metadades
+\providecommand{\nomAs}{}           % Nom de l'assignatura
+\providecommand{\nomEst}{}           % Nom de l'assignatura
+\providecommand{\codAs}{}           % Codi de l'assignatura
+\providecommand{\titulac}{}         % Titulació
+\providecommand{\nomAct}{}          % Nom de l'activitat
+\providecommand{\nomActAUX}{}          % Nom de l'activitat
+\providecommand{\subtitol}{}        % Subtítol opcional
+\providecommand{\nomAsAUX}{}        % Nom auxiliar per assignatures
+\providecommand{\PECportada}{}
+\providecommand{\noplagi}{}
+\providecommand{\PECtoc}{}
+\providecommand{\PECspace}{}
+\providecommand{\dataActual}{}
+\providecommand{\subtitol}{}
+\providecommand{\subsubtitol}{}
+\providecommand{\PECfootAUX}{}
+\providecommand{\PECtitleAUX}{}
+\providecommand{\titcrt}{}
+\providecommand{\nomPDC}{}
+
+
+
+% Configuració per a l'índex de figures i captures
+\newcommand{\listofscreenshots}{\listof{screenshots}{Llista de Captures de Pantalla}}
+\newlistof{screenshots}{scr}{Llista de Captures de Pantalla}
+\newcommand{\addtoscreenshots}[2]{\addcontentsline{scr}{screenshots}{\protect\numberline{\thescreenshot}#1}\par}
+
+\newcommand{\listofimages}{\listof{images}{Llista d'Imatges}}
+\newlistof{images}{img}{Llista d'Imatges}
+\newcommand{\addtoimages}[2]{\addcontentsline{img}{images}{\protect\numberline{\theimage}#1}\par}
+
+% Configuració inicial de camins
+\newcommand{\screenshotpath}{screenshots/} % Carpeta de captures de pantalla
+\newcommand{\imagepath}{images/}           % Carpeta d'imatges genèriques
+
+% Comptadors personalitzats
+\newcounter{screenshot}
+\renewcommand{\thescreenshot}{\arabic{screenshot}}
+
+\newcounter{image}
+\renewcommand{\theimage}{\arabic{image}}
+
+
+
+
+%-----------------------------------------
+% PEC.TeX  CUSTOM COMMANDS
+%-----------------------------------------
+
+	%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	%% >>>>>>>>>>>>> \PECshot >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+	%%         BOILER PLATE                                                                              >>>>>>>>>
+		%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>COMMAND >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  \PECshot{name}{caption}
+		
+		% Comanda per inserir captures de pantalla
+		\NewDocumentCommand{\PECshot}{O{0.8} m m}{%% INSEREIX UNA IMATGE PNG GUARDADA A LA CARPETA "screenshots/"
+%		\newcommand{\PECshot}[2][] @deprecated
+		% #1: Amplada de la imatge respecte al màxim de la línia (opcional, per defecte 0.8)
+		% #2: Nom de l'arxiu de la captura en format png (sense ruta ni extensió)
+		% #3: Descripció de la captura
+		\refstepcounter{screenshot}%
+		\begin{figure}[H]%
+			\centering%
+	       		\includegraphics[width=#1\linewidth]{\screenshotpath#2} % Ruta completa
+				\caption{#3}                                         % Peu de foto
+				\label{screenshot:#2}
+				\addtoscreenshots{#3}{screenshot:#2}
+			\end{figure}
+	}%                                                                                    END          >>>>>>>>>
+	%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+	%% >>>>>>>>>>>>> \PECimg >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+	%%         BOILER PLATE                                                                            >>>>>>>>>
+	%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>COMMAND >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  \PECimg{name}{caption}
+
+	\NewDocumentCommand{\PECimg}{O{0.8} m m}{%
+		% #1: Amplada de la imatge respecte al màxim de la línia (opcional, per defecte 0.8)
+		% #2: Nom de l'arxiu de la imatge (sense ruta ni extensió)
+		% #3: Peu de foto o descripció
+		\refstepcounter{image}%
+		\begin{figure}[H]%
+			\centering%
+			\includegraphics[width=#1\linewidth]{\imagepath#2}%
+			\caption{#3}%
+			\label{image:#2}%
+			\addtoimages{#3}{fig:#2}%
+		\end{figure}%
+	}%                                                                                    END          >>>>>>>>>
+	%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+
+\newcommand{\addpdf}[2]{
+	\newpage
+	\includepdf[pages=-, offset=0 -2cm, addtotoc={1,subsection,1, #1,#2}]{documents/#2.pdf}
+}
+\NewDocumentCommand{\PECTeXdocStart}{s}{% Inserta la portada amb el index inclos
+	%% si es vol posar nomes el index sense portada s'ha de pasar un * al final
+	\IfBooleanTF{#1}{\PECtoc}{\PECportada}}

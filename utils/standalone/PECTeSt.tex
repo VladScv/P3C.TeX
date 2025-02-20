@@ -1,0 +1,225 @@
+\documentclass[CAT]{PECTeX}
+\usepackage{PECTeXv1}
+
+
+% Comandes per capçalera i metadades
+%% -- IDIOMA CAT/IB/ENG Per Català, Castellà i anglès respectivament.
+\idioma{CAT}    
+%% -- Nom de l'estudiant
+\nomEst{Vladimir Scoriae}      
+%% -- Titulació
+\titulac{Grau d'Enginyeria Patatera}         
+%% -- Codi de l'assignatura
+\codAs{01312}           
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>		Nom de l'assignatura
+\nomAs{Pràctiques de Patatació}        					%% 	LLARG
+\nomAsAUX{PP} 						%% 	CURT
+        					
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>		Nom de l'activitat:
+\nomAct{PVP3} 						%% 	CURT
+\nomActAUX{Practica Very Patatera: Part 3} 	%% 	LLARG
+
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>		CAMPS OPCIONALS
+\PECfootAUX{PEC.TeX\\Developing}		%% Camp al peu de pagina esquerre
+\PECtitleAUX{This is a testing document for PEC.TeX implementation}		%% Camp auxiliar a la portada
+\subtitol{Patatas Fritas Pata Todos}			%% Subtítol per a la portada
+\subsubtitol{La patata definitiva en el campo de los patatales de von kartoffen analizados en el Potato Institute de Papachussets}		%% Segon subtítol per a la portada
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>	%%	DATA del document
+\dataActual{\today}	%% Per defecte es la data de compilació
+
+\begin{document}
+	\PECTeXStart
+	\section{Introducción a las Herramientas PECTeX}
+		
+		La clase PECTeX proporciona una serie de comandos personalizados diseñados para automatizar y simplificar tareas comunes en la creación de documentos académicos. Esta sección detalla los comandos principales y muestra ejemplos prácticos para cada uno.
+						\PXimg{captura}{Un gráfico de ejemplo.}
+		A continuación, se explican los comandos divididos en dos categorías principales:
+		\begin{enumerate}
+			\item Gestión de Imágenes y Capturas.
+			\item Gestión de Variables Dinámicas.
+		\end{enumerate}
+		\subsection{Comandos para Imágenes y Capturas de Pantalla}
+			
+			Los comandos \texttt{\textbackslash PXshot} y \texttt{\textbackslash PXimg} permiten insertar imágenes y capturas de pantalla de forma rápida y ordenada. Además, se genera automáticamente un índice para referenciar estas imágenes en el documento.
+			\begin{itemize}
+				\item PXshot: Inserta capturas de pantalla desde la carpeta \texttt{screenshots}.
+				\item PXimg: Inserta imágenes desde la carpeta \texttt{images}.
+			\end{itemize}
+			\subsubsection{Ejemplos de Uso}
+			
+			\textbf{Capturas de Pantalla:}
+			\begin{verbatim}
+				\PXshot{captura}{Una captura de pantalla.}
+				\PXshot[0.5]{captura}{Una captura más pequeña.}
+			\end{verbatim}
+			
+			\PXshot{captura}{Una captura de pantalla.} 
+			\PXshot[0.5]{captura}{Una captura más pequeña.}
+			
+			\textbf{Imágenes Genéricas:}
+			\begin{verbatim}
+				\PXimg{grafico}{Un gráfico de ejemplo.}
+				\PXimg[0.6]{grafico}{Un gráfico más pequeño.}
+			\end{verbatim}
+			
+			\PXimg{captura}{Un gràfico de ejemplo.} 
+			\PXimg[0.6]{captura}{Un gráfico más pequeño.} 
+			
+			\textbf{Índices Automáticos:}
+			Para generar los índices de capturas y gráficos, se utilizan:
+			\begin{verbatim}
+				\listofscreenshots
+				\listofimages
+			\end{verbatim}
+			
+		\newpage
+		\listofscreenshots
+		\listofimages
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+		\section{Comandos para Listados de Código}
+		Ahora mostramos cómo incluir fragmentos de código con los nuevos comandos.
+		
+		\subsection{Incluir un Fichero Completo}
+		Para insertar un archivo de código completo (por ejemplo, \texttt{MyStack.java}), usamos:
+		\begin{verbatim}
+			\PXcodefile[Java]{MyStack.java}{Implementación completa de MyStack}[myStackAll]
+		\end{verbatim}
+		
+		\PXcodefile[Java]{MyStack.java}{Implementación completa de MyStack para poder ver cuan largo es estoy escribiendo paore es ribir espero que quede bien formateado porque sino no se como arreglarlo }[myStackAll]
+		
+		\subsection{Incluir un Fragmento de Líneas}
+		Para solo un trozo del mismo archivo, indicamos \emph{línea inicial} y \emph{línea final}:
+		\begin{verbatim}
+			\PXcodechunk[Java]{MyStack.java}{11}{20}{Solo el constructor y push() de MyStack}[pushCtor]
+		\end{verbatim}
+		
+		\PXcodechunk[Java]{MyStack.java}{11}{20}{Solo el constructor y push() de MyStack}[pushCtor]
+		
+		\subsection{Lista de Fragmentos de Código}
+		Al igual que con \texttt{screenshots} o \texttt{images}, disponemos de:
+		\begin{verbatim}
+			\listofcodes
+		\end{verbatim}
+		
+		\newpage
+		\listofcodes
+		
+		\section{Ejecuciones en la Consola}
+		
+		
+	\PXinOut[sayPatata.sh]{echo "patatas pata todos"}{patatas pata todos}[sayPatata]
+	\PXcmd{Patata}{echo "patatas pata todos"}
+	\newpage
+	\listofconsoleprompts
+		
+		
+\PXprompt{ipconfig}
+{Windows IP Configuration
+	Ethernet adapter Ethernet:
+	
+	Connection-specific DNS Suffix  . :
+	IPv6 Address. . . . . . . . . . . : 2a0c:5a84:e507:d100:2072:c71d:5df5:1086
+	Temporary IPv6 Address. . . . . . : 2a0c:5a84:e507:d100:a882:7fc7:cac4:b5c1
+	Link-local IPv6 Address . . . . . : fe80::e03c:cd73:a74f:93cf%14
+	IPv4 Address. . . . . . . . . . . : 192.168.1.147
+	Subnet Mask . . . . . . . . . . . : 255.255.255.0
+	Default Gateway . . . . . . . . . : fe80::1%14
+	192.168.1.1
+	
+	Ethernet adapter Ethernet 3:
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::c06f:fea6:9c6e:311b%15
+	IPv4 Address. . . . . . . . . . . : 192.168.56.1
+	Subnet Mask . . . . . . . . . . . : 255.255.255.0
+	Default Gateway . . . . . . . . . :
+	
+	Wireless LAN adapter Wi-Fi:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Wireless LAN adapter Conexión de área local* 1:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Wireless LAN adapter Conexión de área local* 2:
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::1448:7b3e:e441:4a9%10
+	IPv4 Address. . . . . . . . . . . : 192.168.137.1
+	Subnet Mask . . . . . . . . . . . : 255.255.255.0
+	Default Gateway . . . . . . . . . :
+	
+	Ethernet adapter Conexión de red Bluetooth:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Ethernet adapter vEthernet (Default Switch):
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::7f8:729d:d9b7:65a6%64
+	IPv4 Address. . . . . . . . . . . : 172.23.112.1
+	Wireless LAN adapter Wi-Fi:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Wireless LAN adapter Conexión de área local* 1:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Wireless LAN adapter Conexión de área local* 2:
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::1448:7b3e:e441:4a9%10
+	IPv4 Address. . . . . . . . . . . : 192.168.137.1
+	Subnet Mask . . . . . . . . . . . : 255.255.255.0
+	Default Gateway . . . . . . . . . :
+	
+	Ethernet adapter Conexión de red Bluetooth:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Ethernet adapter vEthernet (Default Switch):
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::7f8:729d:d9b7:65a6%64
+	IPv4 Address. . . . . . . . . . . : 172.23.112.1
+	Wireless LAN adapter Wi-Fi:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Wireless LAN adapter Conexión de área local* 1:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Wireless LAN adapter Conexión de área local* 2:
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::1448:7b3e:e441:4a9%10
+	IPv4 Address. . . . . . . . . . . : 192.168.137.1
+	Subnet Mask . . . . . . . . . . . : 255.255.255.0
+	Default Gateway . . . . . . . . . :
+	
+	Ethernet adapter Conexión de red Bluetooth:
+	
+	Media State . . . . . . . . . . . : Media disconnected
+	Connection-specific DNS Suffix  . :
+	
+	Ethernet adapter vEthernet (Default Switch):
+	
+	Connection-specific DNS Suffix  . :
+	Link-local IPv6 Address . . . . . : fe80::7f8:729d:d9b7:65a6%64
+	IPv4 Address. . . . . . . . . . . : 172.23.112.1
+	Subnet Mask . . . . . . . . . . . : 255.255.240.0
+	Default Gateway . . . . . . . . . :
+}
+
+\end{document}

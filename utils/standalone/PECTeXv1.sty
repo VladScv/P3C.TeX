@@ -1,0 +1,291 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{PECTeXv1}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,fit,backgrounds,shadows}
+\RequirePackage{PECTeX-langs}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{tocloft}
+\usepackage[hidelinks,linktoc=all]{hyperref}
+\usepackage{cleveref}
+\usepackage{pgf,pgfmath} % For parsing math expressions
+\usepackage{xparse}      % For flexible argument handling
+\usepackage{ifthen}      % <-- Needed for \ifthenelse and \equal
+\usepackage[figurename= ]{caption}
+\usepackage[most]{tcolorbox}
+
+%%	Hyperref SETUP
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,          % Color dels enllaços interns (com TOC)
+	filecolor=magenta,       % Color per enllaços a fitxers
+	urlcolor=cyan,           % Color per URLs
+	citecolor=green,         % Color per cites
+	bookmarks=true,          % Incloure marcadors en el PDF
+	pdftitle={Títol del document}, % Títol del document
+	pdfauthor={Autor del document}, % Autor del document
+	pdfsubject={Tema del document}, % Tema del document
+	pdfkeywords={Paraules clau}, % Paraules clau per a la cerca
+}
+%-----------------------------------------
+	% IMPORT CLASS COMMANDS FROM PECTeX.cls 
+%-----------------------------------------
+\providecommand{\idioma}{}       
+\providecommand{\nomEst}{}
+\providecommand{\titulac}{}
+\providecommand{\codAs}{}
+\providecommand{\nomAs}{} 
+\providecommand{\nomAsAUX}{}
+\providecommand{\nomAct}{} 
+\providecommand{\nomActAUX}{}
+\providecommand{\PECfootAUX}{}
+\providecommand{\PECtitleAUX}{}
+\providecommand{\subtitol}{}
+\providecommand{\subsubtitol}{}
+\providecommand{\dataActual}{}
+\providecommand{\PXportada}{}
+\providecommand{\noplagi}{}
+\providecommand{\PXtoc}{}
+\providecommand{\PXspace}{}
+\providecommand{\titcrt}{}
+\providecommand{\nomPDC}{}
+%% >>>>>>>>> LANGUAGE Dependent values
+\ifthenelse{\boolean{langspanish}}{%
+	% Castellano
+	\NewDocumentCommand{\imageName}{s}{%
+		\IfBooleanTF{#1}{Imágenes}{Imagen}%
+	}
+	\NewDocumentCommand{\screenshotName}{s}{%
+		\IfBooleanTF{#1}{Capturas de Pantalla}{Captura}%
+	} 
+	\NewDocumentCommand{\codeName}{s}{%
+		\IfBooleanTF{#1}{Código fuente}{Fragmento de Código}%
+	}
+	\NewDocumentCommand{\promptName}{s}{%
+		\IfBooleanTF{#1}{Comando}{Fragmento de Código}%
+	}
+	
+}{%
+	\ifthenelse{\boolean{langcatalan}}{%
+		% Catalán
+		\NewDocumentCommand{\imageName}{s}{%
+			\IfBooleanTF{#1}{Imatges}{Imatge}%
+		}
+		\NewDocumentCommand{\screenshotName}{s}{%
+			\IfBooleanTF{#1}{Captures de pantalla}{Captura}%
+		}
+		\NewDocumentCommand{\codeName}{s}{%
+			\IfBooleanTF{#1}{Codi font}{Fragment de Codi}%
+		}
+	}{%
+		% Inglés
+		\NewDocumentCommand{\imageName}{s}{%
+			\IfBooleanTF{#1}{Pictures}{Picture}%
+		}
+		\NewDocumentCommand{\screenshotName}{s}{%
+			\IfBooleanTF{#1}{Screenshots}{Screenshot}%
+		}
+		\NewDocumentCommand{\codeName}{s}{%
+			\IfBooleanTF{#1}{Source Code}{Code chunk}%
+		}
+	}%
+}
+
+
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%\renewcommand{\figurename}{.}	%% QUIT default figure name counter
+%% >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+%-----------------------------------------
+% Lists for screenshots/images/code
+%-----------------------------------------
+\newcommand{\listofscreenshots}{\listof{screenshots}{\screenshotName*}}
+\newlistof{screenshots}{shot}{\screenshotName*}
+\newcommand{\addtoscreenshots}[2]{\addcontentsline{shot}{screenshots}{\protect\numberline{\thescreenshot}\textbf{\thesubsubsection}\hspace{1em}[#2]: #1}\par}
+
+\newcommand{\listofimages}{\listof{images}{\imageName*}}
+\newlistof{images}{img}{\imageName*}
+\newcommand{\addtoimages}[2]{\addcontentsline{img}{images}{\protect\numberline{\theimage}\textbf{\thesubsubsection}\hspace{1em}[#2] #1}\par}
+
+\newcommand{\listofcodes}{\listof{codes}{\codeName*}} 
+\newlistof{codes}{cod}{\codeName*}
+\newcommand{\addtocodes}[3]{\addcontentsline{cod}{codes}{\protect\numberline{\thecodechunk}\textbf{\thesubsubsection}\hspace{1em}\textbf{#2}$^{\text{ #3 }}$: #1}\par}
+
+% Default PATHS for images
+\newcommand{\screenshotpath}{screenshots/}
+\newcommand{\imagepath}{images/}
+%-----------------------------------------
+% Counters
+%-----------------------------------------
+\newcounter{screenshot}
+\renewcommand{\thescreenshot}{\arabic{screenshot}}
+\newcounter{image}
+\renewcommand{\theimage}{\arabic{image}}
+\newcounter{codechunk}
+\renewcommand{\thecodechunk}{\arabic{codechunk}}
+%-----------------------------------------
+% Commands to embed images with references
+%-----------------------------------------
+\NewDocumentCommand{\PXshot}{O{0.8} m m o}{%
+	% #1: width fraction [0.8 by default]
+	% #2: file name (no extension, from \screenshotpath)
+	% #3: caption text
+	% #4: optional label text
+	\refstepcounter{screenshot}%% increase counter
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=#1\linewidth]{\screenshotpath #2}%
+		\caption*{\screenshotName\arabic{screenshot}:#3}%
+		\IfNoValueTF{#4}{%
+			\label{shot:#2}%
+			\addtoscreenshots{#3}{#2}
+		}{%
+			\label{shot:#4}%
+			\addtoscreenshots{#3}{#4}
+		}%
+	\end{figure}
+}
+
+\NewDocumentCommand{\PXimg}{O{0.8} m m o}{%
+	% #1: width fraction [0.8 by default]
+	% #2: file name (no extension, from \images)
+	% #3: caption text
+	% #4: optional label text
+	\refstepcounter{image} %% increase counter
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=#1\linewidth]{\imagepath #2}%
+		\caption*{\imageName(\arabic{image}): #3}
+		\IfNoValueTF{#4}{%
+			\label{img:#2}%
+			\addtoimages{#3}{#2}%
+		}{%
+			\label{img:#4}%
+			\addtoimages{#3}{#4}%
+		}%
+	\end{figure}%
+}
+\NewDocumentCommand{\PXcodefile}{O{MyLaTeX} m m o}{%
+	% #1: lenguaje (por defecto MyLaTeX)
+	% #2: fichero en "code/"
+	% #3: descripción (p. ej. "Implementación de X")
+	% #4: label opcional	
+	\refstepcounter{codechunk}% aumenta contador
+	\texttt{\codeName*\hspace{0.2em}\thecodechunk :}\hspace{.1\linewidth}%
+	\textbf{ \IfNoValueTF{#4}{#2}{#4 }}$_\text{ #1 }$ \label{code:\IfNoValueTF{#4}{#2}{#4}}%
+	\vspace{0.5em}\par%
+	\lstinputlisting[language=px#1, breaklines=true, float=false, title=$^\text{\textbf{\codeName* \thecodechunk}}_{^{\emph{\hspace{1em} #1 }}\text{{\texttt{\IfNoValueTF{#4}{ #2 }{ #4 }}}}} $: #3, ]{code/#2}
+	\addtocodes{#3}{\IfNoValueTF{#4}{#2}{#4}}{#1}%	
+	\par\vspace{1em}%
+}
+\NewDocumentCommand{\PXcodechunk}{O{MyLaTeX} m m m m o}{%
+	% #1: lenguaje
+	% #2: fichero
+	% #3: línea inicial
+	% #4: línea final
+	% #5: caption/desc
+	% #6: label opcional
+	\refstepcounter{codechunk}
+	\texttt{\codeName\hspace{0.2em}\thecodechunk [#3 - #4]:}\hspace{.1\linewidth}%
+	\textbf{ \IfNoValueTF{#6}{#2}{#6}}$_\text{ #1 }$ \label{code:\IfNoValueTF{#6}{#2}{#6}}%
+	\vspace{0.5em}\par%
+		\lstinputlisting[language=px#1, firstline=#3,	lastline=#4, breaklines=true, float=false, title=$^\text{\textbf{\codeName \thecodechunk}}_{^{\emph{\hspace{1em} #1 }}\text{{\texttt{\IfNoValueTF{#6}{ #2 }{ #6 }}}}} $: #5]{code/#2}		
+%		\caption*{\codeName\thecodechunk: #5}
+%		\label{code:\IfNoValueTF{#6}{#2}{#6}}
+%	\end{figure}	
+	\addtocodes{#5}{\IfNoValueTF{#6}{#2}{#6}}{#1}
+	\par\vspace{1em}	
+}
+
+
+%-----------------------------------------
+% Command to embed external PDFs
+%-----------------------------------------
+\newcommand{\addpdf}[2]{%
+	\newpage
+	\includepdf[pages=-, offset=0 -2cm, addtotoc={1,subsection,1, #1,#2}]{documents/#2.pdf}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% A) LISTA DE PROMPTS y CONTADOR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\listofconsoleprompts}{\listof{consoleprompts}{Lista de Consola}}
+\newlistof{consoleprompts}{cpr}{Lista de Consola}
+\newcommand{\addtoconsole}[2]{%
+	% #1 = título / descripción
+	% #2 = label (o título) para el .toc
+	\addcontentsline{cpr}{consoleprompts}{%
+		\protect\numberline{\theconsoleprompt}#1
+	}%
+}
+\newcounter{consoleprompt}
+\renewcommand{\theconsoleprompt}{\arabic{consoleprompt}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% B) \PXconsole: Comando + Resultado en 2 cajas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\NewDocumentCommand{\PXinOut}{O{Command} m m o}{%
+	% #1: Título (por defecto "Operation")
+	% #2: comando (multilínea)
+	% #3: resultado (multilínea)
+	% #4: label opcional
+	
+	\refstepcounter{consoleprompt}
+	\noindent
+	\textbf{Prompt \theconsoleprompt: #1}%
+	\IfNoValueTF{#4}{}{%
+		\label{console:#4}%
+	}
+	\vspace{0.5em}\par
+%	% Caja 1: COMANDO con estilo bashDark
+	\begin{tcolorbox}[colback=black!80!white!,title=in:]
+		\lstinline[style=bashDark]{#2}
+	\end{tcolorbox}
+	\begin{tcolorbox}[colback=gray!20!,title=out:]
+		\lstinline{#3}
+	\end{tcolorbox}
+
+	\addtoconsole{#1}{\IfNoValueTF{#4}{#1}{#4}}
+	\par\vspace{1em}
+}
+\newcommand{\PXcmd}[2]{\begin{tcolorbox}[colback=black!80!white!,title=#1]
+		\lstinline[style=bashDark]{#2}
+\end{tcolorbox}}
+%\makeatletter
+\NewDocumentCommand{\PXprompt}{O{\$} v+v}{%	
+	\begin{tcolorbox}[colback=airblueuoc!90!black!90!,coltext=white!100!,title=in,verbatim ignore percent,breakable,colframe=black!60!airblueuoc!100!,fonttitle=\bfseries]#1 #2
+				\end{tcolorbox}
+%			\end{minipage}\\
+%			\makeatother
+%			\begin{minipage}{\linewidth}
+	\begin{tcolorbox}[colback=black!60!airblueuoc!100!,coltext=white!100!,title=out,verbatim ignore percent,breakable,colframe=airblueuoc!100!black!100!,fonttitle=\bfseries]
+					#3					
+				\end{tcolorbox}
+%			\end{minipage}
+%	}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% \PXshowTeX
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Entorno para mostrar el código a la izquierda y el resultado a la derecha.
+%\NewDocumentEnvironment{PXprompt}{v+v}  % +v => Captura el contenido como verbatim
+%{%
+%	\begin{tcolorbox}[enhanced,title={Demostración LaTeX},fonttitle=\bfseries,
+%		colback=white,colframe=black!50,
+%		boxrule=0.4pt,         % grosor del borde
+%		lowerbox=ignored,
+%		]
+%		% --- Iniciamos dos minipage para ponerlo en paralelo ---
+%		\begin{minipage}[t]{0.48\linewidth}
+%			\begin{tcolorbox}[colback=black!80!white!,title=in]
+%				\lstinline[style=bashDark]{#1}
+%			\end{tcolorbox}
+%		\end{minipage}
+%		\hfill
+%		\begin{minipage}[t]{0.48\linewidth}
+%			\begin{tcolorbox}[colback=gray!20!,title=out]
+%				\lstinline{#2}
+%			\end{tcolorbox}
+%			\end{minipage}
+%		\end{tcolorbox}
+%}
+%{}

@@ -1,0 +1,116 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{PECTeX-langs}[2025/02/16 Extra listings config for PECTeX]
+\RequirePackage{xcolor}
+\RequirePackage{listings}
+
+% --------------------------------------------------------------------
+% PARTE COMÚN A TODOS LOS LENGUAJES
+% --------------------------------------------------------------------
+\lstset{%
+	basicstyle       = \ttfamily\footnotesize,
+	numberstyle      = \tiny\color{gray},
+	numbers          = left,
+	frame            = single,
+	tabsize          = 4,
+	breaklines       = true,
+	showstringspaces = false,
+	columns          = flexible,
+	keepspaces       = true,
+	captionpos       = b,
+	escapeinside     = {(*@}{@*)},
+	% LITERATE con tildes y eñes, para que se aplique a TODOS
+	literate=
+	{á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+	{Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'Í}}1 {Ó}{{\'O}}1 {Ú}{{\'Ú}}1
+	{ñ}{{\~n}}1 {Ñ}{{\~N}}1 {¿}{{?`}}1 {¡}{{!`}}1,
+}
+
+% --------------------------------------------------------------------
+% pxJAVA: Basado en "Java" nativo, color distinto
+% --------------------------------------------------------------------
+\lstdefinelanguage{pxJava}{
+	language=Java, % Indica que se basa en Java
+	% Ajustes DE COLOR específicos para pxJAVA:
+	backgroundcolor = {\color[HTML]{F3F7FF}}, % azul claro
+	keywordstyle    = {\color[HTML]{D62828}\bfseries},  % rojos
+	keywordstyle=[2]{\color[HTML]{6A1B9A}\bfseries},    % rojos 2
+	commentstyle    = {\itshape\color[HTML]{7D8590}},
+	stringstyle     = {\color[HTML]{008000}},
+	% Keywords extra
+	morekeywords    = {String,Integer,int,char,Double,Boolean,ArrayList,return},
+	morekeywords=[2]{main,println,System,out,in},
+}
+
+% --------------------------------------------------------------------
+% pxYAML
+% --------------------------------------------------------------------
+\lstdefinelanguage{pxYAML}{
+	% No nos basamos en uno nativo (listings no trae 'YAML'), así que definimos:
+	backgroundcolor = {\color[HTML]{FFFAF0}},    % marfil
+	keywordstyle    = {\bfseries\color[HTML]{C71585}}, % magenta
+	commentstyle    = {\itshape\color[HTML]{228B22}},  % verde
+	stringstyle     = {\color[HTML]{005555}},
+	keywords        = {true,false,null,yes,no},
+	morestring=[b]', morestring=[b]", 
+	sensitive=false,
+	% Realzar ciertos símbolos
+	literate=
+	{:}{{\color{red}:}}{1}
+	{,}{{\color{red},}}{1}
+	{[}{{\color{blue}[}}{1}
+	{]}{{\color{blue}]}}{1}
+	{>}{{\color{magenta}>}}{1}
+	{|}{{\color{magenta}|}}{1},
+	comment=[l]{\#},
+	escapeinside={(/**@}{@*/},
+}
+
+% --------------------------------------------------------------------
+% MyLaTeX: Basado en 'TeX' nativo
+% --------------------------------------------------------------------
+\lstdefinelanguage{pxTeX}{
+	language=TeX, % listings ya trae un "TeX"
+	backgroundcolor = {\color[HTML]{F5F5F5}},  % gris
+	keywordstyle    = {\bfseries\color[HTML]{A71D5D}},
+	commentstyle    = {\itshape\color[HTML]{808080}},
+	stringstyle     = {\color[HTML]{008000}},
+	% Extra keywords
+	morekeywords={documentclass,usepackage,begin,end,newcommand,renewcommand,providecommand},
+	alsoletter={\\},
+}
+
+% --------------------------------------------------------------------
+% ARM Assembler
+% --------------------------------------------------------------------
+\lstdefinelanguage{pxAssembler}{
+	language=Assembler, % se basa en Assembler nativo
+	backgroundcolor = {\color[HTML]{FFF0F0}},  % rosado
+	keywordstyle    = {\bfseries\color[HTML]{AA17EE}}, 
+	commentstyle    = {\itshape\color[HTML]{7F7F7F}},
+	stringstyle     = {\color[HTML]{007F00}},
+	% Añado tu larga lista de keywords...
+	morekeywords={adc,adcal,adcal...,add,addal,adds,...},
+	morekeywords=[2]{.2byte,.4byte,.8byte,.abort,.align,...},
+	alsoletter={.,0,1,2,3,4,5,6,7,8,9},
+	alsodigit={?},
+	sensitive=false,
+	morecomment=[s]{/*}{*/},
+	morecomment=[l]@,
+	morecomment=[l]//,
+}
+% Estilo "bashDark" para la consola Bash modo oscuro
+\lstdefinestyle{bashDark}{
+	language=bash,
+	backgroundcolor=\color{black},        % Fondo negro
+	basicstyle=\color{white}\ttfamily\footnotesize,  % Letra blanca y monoespacio
+	commentstyle=\color{green}\itshape,   % Comentarios en verde
+	keywordstyle=\color{cyan}\bfseries,   % Keywords en cian
+	stringstyle=\color{yellow},           % Strings en amarillo
+	numberstyle=\tiny\color{gray},        % Números de línea (si los pones)
+	showstringspaces=false,
+	breaklines=true,
+	columns=flexible,
+	tabsize=4
+}
+
+

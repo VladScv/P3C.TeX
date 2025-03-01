@@ -2,7 +2,7 @@
 echo -------------------------------------------------
 echo Bienvenido al generador de plantillas TeXstudio
 echo -------------------------------------------------
-set "dir=C:\Users\SCVRI\AppData\Roaming\texstudio\templates\user\uocpac"
+set "dir=%%TEMPLATE-PATH%%"
 set "codigo1=05.575"
 set "codigo2=05.582"
 set "codigo3=05.589"
@@ -56,4 +56,4 @@ powershell -Command "(gc '%nombre%.tex') -replace '::CODI::', '%codi%' | Out-Fil
 powershell -Command "(gc '%nombre%.tex') -replace '::SHORT::', '%short%' | Out-File -encoding UTF8 '%nombre%.tex'"
 powershell -Command "(gc '%nombre%.tex') -replace '::ASSIGNATURA::', '%assignatura%' | Out-File -encoding UTF8 '%nombre%.tex'"
 powershell -Command "(gc '%nombre%.tex') -replace '::NOM::', '%nom%' | Out-File -encoding UTF8 '%nombre%.tex'"
-start "" "V:\Program Files\texstudio\texstudio.exe" "%nombre%.tex"
+start "" "C:\Program Files\texstudio\texstudio.exe" "%nombre%.tex"

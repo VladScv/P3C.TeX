@@ -57,22 +57,14 @@
 	\setboolean{langcatalan}{false}
 	\setboolean{langspanish}{true}
 	\setboolean{langenglish}{false}
-%	\@imageName{Imagen}
-%	\@screenshotName{Captura}
-%	\@imageNameP{Imágenes}
-%	\@screenshotNameP{Capturas de Pantalla}
 }
 \DeclareOption{ENG}{
 	\setboolean{langcatalan}{false}
 	\setboolean{langspanish}{false}
 	\setboolean{langenglish}{true}
-%	\@imageName{Picture}
-%	\@screenshotName{Screenshot}
-%	\@imageName{Pictures}
-%	\@screenshotName{Screenshots}
 }
 
-\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}% Passa les opcions no declarades explícitament a "article". Així es poden fer servir totes les opcions de report.
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
 \ProcessOptions
 
 %% --------------- Basat en l'estil article -------------------
@@ -113,27 +105,6 @@
 	\renewcommand{\headrule}{\hbox to\headwidth{%
 			\color{airblueuoc}\leaders\hrule height \headrulewidth\hfill}}
 }
-%\pagestyle{uocstyle} 
-
-%\pagestyle{fancy} 
-%\setlength\headheight{35pt}
-%\lhead{\raisebox{0.075truecm}{\includegraphics[height=1truecm]{styles/img/noulogo.png}}}
-%\chead{\textbf{\@author}\\ \@nomAct}
-%\rhead{\@codAs\\ \@nomAs}
-%\fancyfoot{}
-%\renewcommand\headrulewidth{2pt}
-%
-%\renewcommand\footrulewidth{0.4pt}
-%\renewcommand{\footrule}{\hbox to\headwidth{%
-%		\color{airblueuoc}\leaders\hrule height \footrulewidth\hfill}}
-%\renewcommand{\headrule}{\hbox to\headwidth{%
-%		\color{airblueuoc}\leaders\hrule height \footrulewidth\hfill}}
-%
-%\lfoot{}
-%\cfoot{\thepage}
-%\rfoot{\includegraphics[height=0.35truecm,keepaspectratio=true]{styles/img/eimt.png} \hspace*{0.25truecm} }
-
-%% --------------- Definició de comandes -------------------
 \definecolor{airblueuoc}{rgb}{0.36, 0.54, 0.66}
 \newcommand{\bluepac}{\color{airblueuoc}} %% Definició del color blau de la plantilla.
 \newcommand{\graypac}{\color{gray}} %% Definició del color gris de la plantilla.
@@ -244,28 +215,17 @@
 	\\
 	\HRule
 }{}
-% Command to resize content to fit the full available width.
-% #1 - The content to be resized.
-\newcommand{\PXflex}[1]{\resizebox{\linewidth}{!}{#1}}
-% Defines a standard vertical space proportional to 2% of the text height.
+\newcommand{\PXflex}[1]{\resizebox{\linewidth}{!}{#1}}t.
 \newcommand{\PXvspace}{0.02\textheight}
-% Command to insert horizontal space proportional to a fraction of the page width.
-% #1 - The fraction of the page width to define the space.
 \newcommand{\PXhspace}[1]{#1\textwidth}
-% Color definitions in HTML format for consistent styling.
 \color[HTML]{000078}
 \definecolor{celeste}{HTML}{73EDFF}
 \definecolor{gris}{HTML}{F0F0F0}
 
-% Command to generate a styled cover page with dynamic variables for the content.
-% This command uses custom geometry, colors, and layout to create a professional
-% cover page and includes a table of contents (TOC) after the cover.
 \newcommand{\PXportada}{
 	\newgeometry{margin=12mm}
 	\thispagestyle{empty}
 	\noindent
-	
-	
 	\fcolorbox{celeste}{celeste}{
 		\begin{minipage}[t][.30\textheight][t]{0.96\textwidth}
 			\flushleft
@@ -305,8 +265,6 @@
 	\thispagestyle{uocstyle} % Reinstaurar l'estil `fancy` per a la resta del document	
 	\newpage	
 }
-% Command to create a Table of Contents (TOC) with dynamic language support.
-% Automatically adjusts the title of the TOC based on the selected language.
 \newcommand{\PXtoc}{
 	\ifthenelse{\boolean{langcatalan}}{\renewcommand{\contentsname}{Índex}}{}
 	\ifthenelse{\boolean{langspanish}}{\renewcommand{\contentsname}{Índice}}{}
@@ -318,8 +276,6 @@
 	\thispagestyle{uocstyle} % Forçar immediatament l'estil de pàgina
 	\newpage
 }
-% Command to initialize the document with either a cover page or only a TOC.
-% #1 (optional) - If specified with a '*', generates only the TOC without the cover.
 \NewDocumentCommand{\PECTeXStart}{s}{% Inserta la portada amb el index inclos
 	%% si es vol posar nomes el index sense portada s'ha de pasar un * al final
 	\IfBooleanTF{#1}{\PXtoc}{\PXportada}

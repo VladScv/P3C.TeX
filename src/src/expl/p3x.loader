@@ -1,0 +1,33 @@
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{babel}             % Language handling
+% LaTeX3 Programming Layer
+\RequirePackage{expl3}             % LaTeX3 core
+\RequirePackage{l3keys2e}          % Key-value interface
+\RequirePackage{xparse}            % Advanced argument parsing
+
+% Graphics and Layout
+\RequirePackage{graphicx}   % Graphics
+\RequirePackage{geometry}          % Page dimensions
+
+% Math and Font Packages
+\RequirePackage{amsmath}           % Mathematical support
+\RequirePackage{arev}              % Fonts
+% Text Formatting
+\RequirePackage{fancyhdr}          % Header/footer customization
+%\RequirePackage{xcolor}            % Color support (handled by hyperref)
+\RequirePackage{array}             % Table formatting
+\RequirePackage{colortbl}          % Color tables
+% Additional Features
+\RequirePackage{url}               % URL formatting
+\RequirePackage{float}             % Handling floats
+\RequirePackage{pdfpages}          % Including PDFs
+\RequirePackage{pgf}               % Graphics (PGF/TikZ)
+\RequirePackage{tikz}              % Drawing figures with TikZ
+% More Formatting
+\RequirePackage{tcolorbox}         % Colored boxes
+\RequirePackage{caption}           % Custom captions
+\RequirePackage{listings}          % Code listings
+\RequirePackage{tocloft}           % Table of contents formatting
+\RequirePackage{hyperref} 	% --- Configuration setup triggered by P3CTeX / pdf ---
+\RequirePackage{cleveref}	% --- FIX -- Package cleveref Error: cleveref must be loaded after hyperref! ---

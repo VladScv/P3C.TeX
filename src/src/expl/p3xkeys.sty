@@ -1,0 +1,470 @@
+\ProvidesExplFile{p3xkeys}{2025}{v0.1}{debug functions for P3CTeX }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --- P3C.TeX l3keys2e Document Keys: P3CTeX  ------ %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{../src/expl/p3x.loader}  %TODO '../' added for test
+\keys_define:nn { P3CTeX }
+{	% ---------------- DOCUMENT OPTIONS -------------
+	add-cover 				.bool_set:N		=		\l__px_cover_bool,
+	add-cover				.initial:n	=					false,
+	add-cover				.default:n	=					true,
+	no-cover 				.meta:n 	= 							{ 	add-cover = false },
+	cover	 				.meta:n 	=					 		{ 
+		add-cover = true,
+		cover-config= { #1 }
+	},
+	cover-config			.code:n		= 	{%TODO set shorcuts to access rest of the key sets 	
+		\bool_set_true:N \l__px_cover_bool			
+		\keys_set:nn { P3CTeX / cover } { #1 }
+	},
+	verbose					.bool_set:N		=		\l__px_verbose_bool,
+	verbose					.initial:n	=					false,
+	verbose					.default:n	=					true,
+	verbose-mode 		.meta:n 	= 							{ verbose = true  },
+	brief				.meta:n 	= 							{ verbose = false },
+	brief-mode 			.meta:n 	= 							{ verbose = false },
+	help					.bool_set:N	 	= 		\l__px_help_bool,
+	help					.initial:n	=					false,
+	help					.default:n	=					true,	
+	standalone				.code:n			=	{	\keys_set:nn 	{ P3CTeX / paths } 	{ no-paths} }, 
+	pdf-config				.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / pdf } 	{ #1 } 	},
+	layout					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / layout } { #1 } 	},
+	paths					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / paths } 	{ #1 }	},
+	names					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ #1 } 	},
+	data					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / data } 	{ #1 }	},
+	spanish					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ language = es,  #1	}	},
+	catalan					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ language = cat, #1 	}	},
+	english					.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ language = eng, #1 	}	},
+	es						.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ language = es,  #1 	}	},
+	cat						.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ language = cat, #1 	}	},
+	eng						.code:n 		= 	{	\keys_set:nn 	{ P3CTeX / text } 	{ language = eng, #1 	}	},
+	debug-values .bool_set:N = \l__px_debug_values_bool,
+	debug-values .initial:n  = false,
+	debug-values .default:n  = true,
+	%	  % ---------------- PRESETS ----------------
+	preset .choice:,
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% PRESET  DESIGN : PEC %%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	preset/pec .meta:n = {
+		add-cover = false,
+		cover-config = {
+			%			maincolor = UOCcyan
+		}
+	},
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%% PRESET  DESIGN : PR %%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%
+	preset/pr .meta:n = {
+		add-cover = true,
+		cover-config = {
+			% Ejemplo de configuraciones ampliadas
+			maincolor = red,
+			text-subtitle = {Portada para Practica Larga}
+		}
+	},
+	unknown .code:n			=	{		
+		\keys_set:nn { P3CTeX / paths } { #1 }
+		\keys_set:nn { P3CTeX / text } { #1 }
+		\keys_set:nn { P3CTeX / data } { #1 }
+		\keys_set:nn { P3CTeX / layer } { #1 }
+		\keys_set:nn { P3CTeX / pdf } { #1 }
+		\bool_if:NT \l__px_cover_bool {
+			\keys_set:nn { P3CTeX / cover } { #1 }
+		}
+	} 
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------- P3C.TeX KEY SET: P3CTeX / paths ---------- %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\keys_define:nn { P3CTeX / paths }
+{% ---------------- FILE PATHS ----------------
+	% Defines locations for images, screenshots, and code files.
+	img-path 			.tl_set:N		=		\l__px_img_path_tl,
+	img-path 			.initial:n	=			{images/},
+	screenshot-path 	.tl_set:N		=		\l__px_shot_path_tl,
+	screenshot-path		.initial:n	=			{screenshots/},
+	code-path			.tl_set:N		=		\l__px_code_path_tl,
+	code-path			.initial:n	=			{code/},
+	document-path		.tl_set:N		=		\l__px_document_path_tl,
+	document-path		.initial:n	=			{documents/},
+	intex-path			.tl_set:N		=		\l__px_intex_path_tl,%TODO input other tex fragments
+	intex-path			.initial:n	=			{intex/},
+	src-path			.tl_set:N		=		\l__px_src_path_tl,
+	src-path			.initial:n	=			{../src/},%TODO '../' added for test
+	unknown .code:n ={ },
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%  S W I T C H E R S %%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	no-paths			.meta:n			=	{
+		img-path		= {./}
+		screenshot-path	= {./}
+		code-path 		= {./}
+		document-path 	= {./}
+		intex-path 		= {./}
+		src-path		= {./}
+	}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------- P3C.TeX KEY SET: P3CTeX / pdf ---------- %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\keys_define:nn { P3CTeX / pdf }
+{
+	pdf-title     		.tl_set:N 			=	\l__px_pdf_title_tl,
+	pdf-title   	.initial:n 			= {
+		\l__pxdata_subj_short_tl
+		\textunderscore
+		\l__pxdata_act_short_tl
+		\textunderscore
+		\l__pxdata_student_tl
+	},
+	pdf-author    		.tl_set:N 			= 	\l__px_pdf_author_tl,
+	pdf-author		   .initial:n 		= 		\l__pxdata_student_tl,
+	pdfsubject    		.tl_set:N 			= 	\l__px_pdf_subject_tl,
+	pdfsubject   		.initial:n 		= 		{\l__pxdata_subj_name_tl : \l__pxdata_activity_tl},
+	pdfkeywords  		.tl_set:N 			= 	\l__px_pdf_keywords_tl,
+	pdfkeywords  		.initial:n 		= 	{
+		P3CTeX,
+		LaTeX,
+		expl3,
+		UOC,
+		\l__pxdata_subj_name_tl,
+		\l__pxdata_act_short_tl  
+	},
+	add-pdfkeywords	.meta:n				= 	{
+		pdfkeywords = \l__px_pdf_keywords_tl, #1
+	} ,
+	
+	% Metadatos adicionales
+	pdf-creator    		.tl_set:N 			= 	\l__px_pdf_creator_tl,
+	pdf-creator   			.initial:n 		= 		{P3C.TeX: expl3 Repository based on official UOC LaTeX template},
+	
+	pdf-producer 		.tl_set:N 			= 	\l__px_pdf_producer_tl,
+	pdf-producer  		.initial:n 		= 		{P3C.TeX 0.3}, %TODO SET TO A CONSTANT WITH PACKAGE VERSION	
+	% Control del visor PDF
+	pdfpagemode  		.code:n 			= 	{	% Valores típicos: UseNone, UseOutlines, UseThumbs, FullScreen
+		\tl_set:No \l__px_pdf_pagemode_tl {#1}
+	},
+	pdfpagemode  	.initial:n 			= 		{	UseNone	},
+	
+	pdfstartview 		.code:n 			=	{ 	% Valores típicos: Fit, FitH, FitB, etc.
+		\tl_set:No \l__px_pdf_startview_tl {#1}
+	},
+	pdfstartview 		.initial:n 		= 		{	FitH	},
+	linkcolor    		.tl_set:N 			= 	\l__px_linkcolor_tl,
+	linkcolor    		.initial:n 		= 		{UOCdark},
+	linkcolor    		.default:n 		= 		{UOCdark},
+	citecolor    		.tl_set:N 			= 	\l__px_citecolor_tl,
+	citecolor    		.initial:n 		= 		{UOCneutral},
+	urlcolor      		.tl_set:N 			= 	\l__px_urlcolor_tl,
+	urlcolor     		.initial:n 		= 		{UOCdark},
+	filecolor     		.tl_set:N 			= 	\l__px_filecolor_tl,
+	filecolor    		.initial:n 		= 		{UOCgray},
+	bookmarks     		.bool_set:N 		= 	\l__px_bookmarks_bool,
+	bookmarks   		.initial:n 		= 		true,
+	unknown 			.code:n ={ }
+	
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------- P3C.TeX KEY SET: P3CTeX / text ---------- %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\keys_define:nn { P3CTeX / text }
+{	% -------------- LANGUAGE SELECTION ------------ %
+	% The user can select a language from cat/es/en 
+	%	Values can ve overriden lately
+	language .choice:,
+	language / cat 	.meta:n = 
+	{
+		language-internal 		=		catalan,
+		toc-name 				=		Índex,
+		pximg-name 				= 		Imatge,
+		pximg-listname 			= 		Imatges,
+		pxshot-name 			= 		Captura,
+		pxshot-listname 		= 		Captures~de~pantalla,
+		pxcode-name 			=		Fragment~de~Codi,
+		pxcode-listname 		=		Codi~font,
+		pxcmd-name 				= 		Comanda,
+		pxcmd-listname 			= 		Comandes~de~Consola,
+		no-plagiarism 			= 		{ 
+			\par
+			\noindent
+			Jo~
+			\textbf{
+				\tl_use:N \l__pxdata_student_tl
+			}
+			\label{alumne}
+			,~declaro~que~ostento~l'autoria~total~i~plena~de~totes~les~tasques~que~es~duen~a~terme~al~present~document.~
+			Sóc~l'única~persona~que~ha~fet~cada~exercici.~
+			No~he~compartit~els~enunciats~amb~ningú~i~l'únic~ajut~que~he~rebut~ha~estat~a~través~de~l'aula~de~la~UOC~i~el~seu~professorat.~
+			\par
+			\__px_HRule: 
+		}
+	},
+	language / es .meta:n = 
+	{
+		language-internal 		= 		spanish,
+		toc-name 				= 		Índice,
+		pximg-name 				= 		Imagen,
+		pximg-listname 			= 		Imágenes,
+		pxshot-name 		= 		Captura,
+		pxshot-listname 	= 		Capturas~de~Pantalla,
+		pxcode-name 				= 		Fragmento~de~Código,
+		pxcode-listname 			= 		Código~fuente,
+		pxcmd-name				= 		Comando,
+		pxcmd-listname 			= 		Comandos~de~Consola,
+		no-plagiarism 			= 
+		{ 
+			\par
+			\noindent
+			Yo~
+			\textbf{
+				\tl_use:N \l__pxdata_student_tl
+			}
+			\label{alumne}
+			,~declaro~que~ostento~la~autoría~total~y~plena~de~todas~las~tareas~que~se~llevan~a~cabo~en~el~presente~documento.~
+			Soy~la~única~persona~que~ha~elaborado~cada~ejercicio.~		
+			No~he~compartido~los~enunciados~con~nadie~y~la~única~ayuda~que~he~recibido~ha~sido~a~través~del~aula~de~la~UOC~y~su~profesorado.~
+			\par
+			\__px_HRule: 
+		}
+	},
+	language / en .meta:n = {
+		language-internal 		= 		english,
+		toc-name				=		Table~of~Contents,
+		pximg-name				=		Picture,
+		pximg-listname			=		Pictures,
+		pxshot-name			=		Screenshot,
+		pxshot-listname		=		Screenshots,
+		pxcode-name				=		Code~chunk,
+		pxcode-listname			=		Source~Code,
+		pxcmd-name				=		Prompt,
+		pxcmd-listname			=		Console~Prompts,
+		no-plagiarism			=		{ 
+			\par
+			\noindent
+			I,~
+			\textbf{
+				\tl_use:N \l__pxdata_student_tl
+				\label{alumne}
+			}
+			
+			,~declare~that~I~hold~the~total~and~full~authorship~of~all~the~tasks~that~are~carried~out~in~this~document.~
+			I~am~the~only~one~who~has~elaborated~each~exercise.~
+			I~have~not~shared~the~statements~with~anyone~and~the~only~help~I~have~received~has~been~through~the~UOC~classroom~and~teachers~there.~
+			\par
+			\__px_HRule: 
+		}
+	},
+	language .default:n = cat, % Catalán por defecto
+	% ---------------- LANGUAGE-SPECIFIC STRINGS ----------------
+	toc-name 			.tl_set:N 		=		 \l__px_toc_name_tl,
+	pximg-name			.tl_set:N 		=		 \l__px_img_name_tl,
+	pximg-listname		.tl_set:N 		=		 \l__px_img_list_name_tl,
+	pxshot-name 		.tl_set:N 		=		 \l__px_shot_name_tl,
+	pxshot-listname 	.tl_set:N 		=		 \l__px_shot_list_name_tl,
+	pxcode-name 		.tl_set:N 		=		 \l__px_code_name_tl,
+	pxcode-listname 	.tl_set:N 		=		 \l__px_code_list_name_tl,
+	pxcmd-name 			.tl_set:N 		=		 \l__px_cmd_name_tl,
+	pxcmd-listname 		.tl_set:N		=		 \l__px_cmd_list_name_tl,
+	language-internal 	.tl_set:N 		=		 \l__px_language_internal_tl,		
+	no-plagiarism 		.tl_set:N 		=		 \l__px_no_plagi_tl,
+	unknown .code:n = {	}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------- P3C.TeX KEY SET: P3CTeX / data ---------- %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\keys_define:nn { P3CTeX / data}
+{	% ---------------- DOCUMENT METADATA -----------
+	% Stores metadata information used in document
+	alumne				.tl_set:N 		=		\l__pxdata_student_tl,
+	alumne			.initial:n		=									{Nom~Alumne},
+	titulacio			.tl_set:N		=		\l__pxdata_course_tl,
+	titulacio		.initial:n		=									{Nom~de~la~Titulació},
+	assignatura			.tl_set:N		=		\l__pxdata_subj_name_tl,
+	assignatura		.initial:n		=									{Nom de la Assignatura},
+	assig-curt			.tl_set:N		=		\l__pxdata_subj_short_tl,
+	assig-curt		.initial:n 		=									{NmAsg},
+	assig-codi			.tl_set:N		=		\l__pxdata_subj_code_tl,
+	assig-codi		.initial:n		=									{codiAsg},
+	activitat			.tl_set:N		=		\l__pxdata_activity_tl,
+	activitat		.initial:n		=									{Nom de l'activitat},
+	nomcurt				.tl_set:N 		=		\l__pxdata_act_short_tl,
+	nomcurt			.initial:n		=									{NmAct},
+	date 				.tl_set:N		=		\l__px_date_tl,
+	date 				.initial:n	=									{\today},
+	unknown .code:n ={ },	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%  S W I T C H E R S %%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	load-example	.meta:n				=	{
+		alumne = {Guillem~Portes},
+		titulacio = {Software~Engineering~Degree},			
+		assignatura	= {Pràctiques~de~Procrastinació-Avançada~en~\LaTeX},
+		assig-curt = {PPAL},
+		assig-codi = {01312},						
+		activitat = {Repte~1:~Introducció~a~\texttt{xpl3} },
+		nomcurt = {PAC1},
+		date = {1~de~Gener~de~1970}	
+	}	
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------- P3C.TeX KEY SET: P3CTeX / layout -------- %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\keys_define:nn { P3CTeX / layout }
+{	% ------------- LAYOUT: CABECERA Y PIE -------------
+	header-left         .tl_set:N		=		{	\l__px_header_left_tl 					},
+	header-left         .initial:n	=		{	
+		\raisebox{0.075truecm}{
+			\includegraphics[height=1cm]
+			{\tl_use:N \l__px_src_path_tl /img/pxhlogo.png} %TODO quit hardcoded logo name
+		} 
+	},
+	header-center       .tl_set:N		=		\l__px_header_center_tl,
+	header-center       .initial:n	=		{	\bfseries\l__pxdata_student_tl	},%todo
+	header-right        .tl_set:N		=		\l__px_header_right_tl,
+	header-right        .initial:n	=		{	header-right	},%todo
+	footer-left         .tl_set:N		=		\l__px_footer_left_tl ,
+	footer-left         .initial:n	=		{	footer-left },%todo
+	footer-center       .tl_set:N		=		\l__px_footer_center_tl,
+	footer-center       .initial:n	=		{		\thepage	},
+	footer-right        .tl_set:N		=		\l__px_footer_right_tl ,
+	footer-right        .initial:n	=		{footer-right},%todo
+	unknown .code:n ={ }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% -------- P3C.TeX KEY SET: P3CTeX / cover --------- %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\keys_define:nn { P3CTeX / cover }
+{ 		% --- Dimensions ---
+	cover-header-height			.dim_set:N 		=	\l__pxcover_header_height,
+		cover-header-height 		.initial:n	= 								{ 0.25\textheight },	
+	cover-subheader-height 		.dim_set:N 		=	\l__pxcover_subheader_height,
+		cover-subheader-height 		.initial:n 	= 								{ 0.20\textheight },
+	cover-body-height 			.dim_set:N 		=	\l__pxcover_body_height,
+		cover-body-height 			.initial:n 	= 								{ 0.70\textheight },	
+	cover-square-size 			.dim_set:N 		=	\l__pxcover_square_size,
+		cover-square-size 			.initial:n 	= 								{ 0.48\textwidth },
+	cover-em 					.dim_set:N 		=	\l__px_em,
+		cover-em 					.initial:n 	=								{ 0.05\textwidth },	
+	cover-font-max 				.dim_set:N 		= 	\l__px_font_max,
+		cover-font-max 				.initial:n 	= 								{ 36pt },
+	% --- Elementos opcionales de la portada ---
+	uppertitle 				.bool_set:N			=	\l__pxcover_upper_title_bool,
+		uppertitle				.initial:n		=			false,
+		uppertitle				.default:n		=			true,	
+	subtitle 				.bool_set:N			=	\l__pxcover_subtitle_bool,
+		subtitle				.initial:n		=			false,
+		subtitle				.default:n		=			true,	
+	subsubtitle 			.bool_set:N			=	\l__pxcover_subsubtitle_bool,
+		subsubtitle 			.initial:n		=			false,
+		subsubtitle 			.default:n		=			true,	
+	add-picture				.bool_set:N			=	\l__pxcover_image_bool,
+		add-picture				.initial:n		=			false,
+		add-picture				.default:n		=			true,	
+	outter-backtitle		.bool_set:N			=	\l__pxcover_out_backtitle_bool,
+		outter-backtitle		.initial:n		=			false,
+		outter-backtitle		.default:n		=			true,	
+	inner-backtitle 		.bool_set:N			=	\l__pxcover_white_backtitle_bool,
+		inner-backtitle			.initial:n		=			false,
+		inner-backtitle			.default:n		=			true,	
+	noplagi				.bool_set:N				=	\l__pxcover_noplagi_bool,
+		noplagi					.initial:n		=			false,
+		noplagi					.default:n		=			true,	
+	offset 				.bool_set:N				=	\l__pxcover_offset_bool,
+		offset					.initial:n		=			false,
+		offset					.default:n		=			true,	
+	clip-author				.bool_set:N			=	\l__pxcover_clip_author_bool,
+		clip-author				.initial:n		=			false,
+		clip-author				.default:n		=			true,	
+	unlink					.bool_set:N			=		\l__pxcover_unlink_bool,
+		unlink					.initial:n		=			false,
+		unlink					.default:n		=			true,
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%  T E X T V A L U E S %%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+	text-backtitle				.tl_set:N		=	\l__pxcover_backtitle_tl,
+		text-backtitle				.initial:n 	=				{\l__pxdata_course_tl},
+	text-uppertitle 			.tl_set:N		=	\l__pxcover_uppertitle_tl,
+		text-uppertitle 			.initial:n	=				{\l__pxdata_activity_tl},
+	text-title		 			.tl_set:N		=	\l__pxcover_title_tl,
+		text-title					.initial:n 	=				{\l__pxdata_subj_name_tl},
+	text-minititle				.tl_set:N		=	\l__pxcover_minititle_tl,
+		text-minititle				.initial:n 	=				{\l__pxdata_act_short_tl},
+	text-subtitle 				.tl_set:N		=	\l__pxcover_subtitle_tl,
+		text-subtitle				.initial:n 	=				{\l__pxdata_activity_tl},
+	text-subsubtitle			.tl_set:N		=	\l__pxcover_subsubtitle_tl,
+		text-subsubtitle			.initial:n 	=		{\l__pxdata_subj_code_tl},
+	text-author					.tl_set:N		=	\l__pxcover_author_tl,
+		text-author					.initial:n 	=		{\l__pxdata_student_tl},
+	text-date 					.tl_set:N		=	\l__pxcover_date_tl,
+		text-date					.initial:n 	=		{\l__px_date_tl},
+	text-auxtext 				.tl_set:N		=	\l__pxcover_aux_tl,
+	text-auxtext					.initial:n 	=	{ Document~done~using~P3C.TeX~\LaTeX~repository.},
+	% --- Imágenes en la portada ---
+	set-mainpicture				.tl_set:N		=	\l__pxcover_image_long_tl,
+	set-mainpicture			.initial:n 		=								pxlngcover,
+	set-auxpicture				.tl_set:N		=	\l__pxcover_image_square_tl,
+	set-auxpicture			.initial:n 		=								pxsqrcover,
+	% --- Estilo de la portada ---
+	maincolor	 				.tl_set:N		=	\l__pxcover_color_tl,
+	maincolor	 			.initial:n		=								UOCcyan,
+	auxcolor	 				.tl_set:N		=	\l__pxcover_aux_color_tl,
+	auxcolor	 			.initial:n		=								UOCgray,
+	textcolor					.tl_set:N		=	\l__pxcover_text_color_tl,
+	textcolor 				.initial:n		=								UOCblue,
+	textcolor-aux 				.tl_set:N		=	\l__pxcover_text_aux_color_tl,
+	textcolor-aux			.initial:n		=								UOCwhite,
+	bg-color 					.tl_set:N		=	\l__pxcover_img_bg_tl,
+	bg-color 				.initial:n		=								UOCwhite,
+	% --- Tamaños de fuente ---
+	title-size 					.tl_set:N		=	\l__pxcover_title_size_tl,
+	title-size 				.initial:n		=								\Huge,
+	subtitle-size 				.tl_set:N		=	\l__pxcover_subtitle_size_tl,
+	subtitle-size 			.initial:n		=								\large,
+	% --- Márgenes de la portada ---	
+	margin-h					.dim_set:N		=	\l__pxcover_margin_h_tl,
+	margin-h 				.initial:n		=								{0.035\textwidth},
+	margin-v 					.dim_set:N		=	\l__pxcover_margin_v_tl ,
+	margin-v 				.initial:n		=								{0.05\textwidth},
+	unknown .code:n ={ },
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	%%%%%%%%%%%%%%  S W I T C H E R S %%%
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	fullcover				.meta:n = {
+		uppertitle 						=		true,	
+		subtitle 						=		true,	
+		subsubtitle 					=		true,	
+		add-picture						=		true,	
+		outter-backtitle				=		true,	
+		inner-backtitle 				=		false,	
+		noplagi							=		true,	
+		offset 							=		true,	
+		clip-author						=		true,	
+		unlink							= 		true
+	},
+	print-placeholders		.meta:n = 	{
+		uppertitle 			=		true,	
+		subtitle 			=		true,	
+		subsubtitle 		=		true,	
+		add-picture			=		true,	
+		outter-backtitle	=		false,	
+		inner-backtitle 	=		true,	
+		noplagi				=		true,	
+		offset 				=		true,	
+		clip-author			=		false,	
+		unlink				= 		false,
+		text-backtitle		=	backtitle,
+		text-uppertitle 	=	uppertitle,
+		text-title		 	=	title,
+		text-minititle		=	minititle,
+		text-subtitle 		=	subtitle,
+		text-subsubtitle	=	subsubtitle,
+		text-author			=	author,
+		text-date 			=	date,
+		text-auxtext 		=	auxtext
+	}	
+}

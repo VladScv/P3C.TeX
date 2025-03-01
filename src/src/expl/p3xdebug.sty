@@ -1,0 +1,149 @@
+
+\ProvidesExplFile{p3xdebug}{2025}{v0.1}{debug functions for P3CTeX }
+\input{../src/expl/p3x.loader} %TODO '../' added for test
+\cs_new_protected_nopar:Npn \__px_debug_page:
+{
+\clearpage
+\section*{[P3CTeX DEBUG PAGE]}
+
+%% -- P3CTeX booleans --
+\subsection*{PEC.TeX Main Configuration}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{add-cover (cover-bool)} & \tl_to_str:V \l__px_cover_bool \\
+\textbf{verbose-bool} & \tl_to_str:V \l__px_verbose_bool\\
+\textbf{help-bool} & \bool_if:NTF \l__px_help_bool {true}{false}\\
+%% Agrega aquí más booleans si los tuvieras
+\end{tabular}
+\nolinebreak \PXfill
+%% -- P3CTeX / paths --
+%	\subsection*{P3CTeX / paths}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\\[-3em]
+\textbf{\large{P3CTex / paths}}\\[3em]
+\textbf{img-path} & \tl_use:N \l__px_img_path_tl \\
+\textbf{screenshot-path} & \tl_use:N \l__px_shot_path_tl \\
+\textbf{code-path} & \tl_use:N \l__px_code_path_tl \\
+\textbf{document-path} & \tl_use:N \l__px_document_path_tl \\
+\textbf{intex-path} & \tl_use:N \l__px_intex_path_tl \\
+\textbf{src-path} & \tl_use:N \l__px_src_path_tl \\
+\end{tabular}
+
+\bigskip
+%% -- P3CTeX / data --
+\subsection*{P3CTeX / data}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{alumne (student)} & \tl_use:N \l__pxdata_student_tl \\
+\textbf{titulacio} & \tl_use:N \l__pxdata_course_tl \\
+\textbf{assignatura} & \tl_use:N \l__pxdata_subj_name_tl \\
+\textbf{assig-curt} & \tl_use:N \l__pxdata_subj_short_tl \\
+\textbf{assig-codi} & \tl_use:N \l__pxdata_subj_code_tl \\
+\textbf{activitat} & \tl_use:N \l__pxdata_activity_tl \\
+\textbf{nomcurt} & \tl_use:N \l__pxdata_act_short_tl \\
+\textbf{date} & \tl_use:N \l__px_date_tl \\
+\end{tabular}
+
+\nolinebreak \PXfill
+%	\bigskip
+%% -- P3CTeX / text --
+%	\subsection*{P3CTeX / text}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\\[-3em]
+\textbf{\large{P3CTex / text}}\\[3em]
+\textbf{language} & \tl_use:N \l__px_language_internal_tl \\
+\textbf{toc-name} & \tl_use:N \l__px_toc_name_tl \\
+\textbf{pximg-name} & \tl_use:N \l__px_img_name_tl \\
+\textbf{pximg-listname} & \tl_use:N \l__px_img_list_name_tl \\
+\textbf{pxshot-name} & \tl_use:N \l__px_shot_name_tl \\
+\textbf{pxshot-listname} & \tl_use:N \l__px_shot_list_name_tl \\
+\textbf{pxcode-name} & \tl_use:N \l__px_code_name_tl \\
+\textbf{pxcode-listname} & \tl_use:N \l__px_code_list_name_tl \\
+\textbf{pxcmd-name} & \tl_use:N \l__px_cmd_name_tl \\
+\textbf{pxcmd-listname} & \tl_use:N \l__px_cmd_list_name_tl \\
+\end{tabular}
+
+\medskip
+\textbf{no-plagiarism:}\par
+\fbox{\parbox{0.95\linewidth}{\tl_use:N \l__px_no_plagi_tl}}
+
+\bigskip
+%% -- P3CTeX / pdf --
+\subsection*{P3CTeX / pdf}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{pdf-title} & \tl_use:N \l__px_pdf_title_tl \\
+\textbf{pdf-author} & \tl_use:N \l__px_pdf_author_tl \\
+\textbf{pdf-subject} & \tl_use:N \l__px_pdf_subject_tl \\
+\textbf{pdf-keywords} & \tl_use:N \l__px_pdf_keywords_tl \\
+\textbf{pdf-creator} & \tl_use:N \l__px_pdf_creator_tl \\
+\textbf{pdf-producer} & \tl_use:N \l__px_pdf_producer_tl \\
+\textbf{pdfpagemode} & \tl_use:N \l__px_pdf_pagemode_tl \\
+\textbf{pdfstartview} & \tl_use:N \l__px_pdf_startview_tl \\
+\textbf{linkcolor} & \l__px_linkcolor_tl \\
+\textbf{citecolor} & \l__px_citecolor_tl \\
+\textbf{urlcolor} & \l__px_urlcolor_tl \\
+\textbf{filecolor} & \l__px_filecolor_tl \\
+%		\textbf{bookmarks} & \bool_if:NTF \l__px_bookmarks_bool {true}{false} \\
+\end{tabular}
+
+\bigskip
+%% -- P3CTeX / layout --
+\subsection*{P3CTeX / layout}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{header-left} & \tl_use:N \l__px_header_left_tl \\
+\textbf{header-center} & \tl_use:N \l__px_header_center_tl \\
+\textbf{header-right} & \tl_use:N \l__px_header_right_tl \\
+\textbf{footer-left} & \tl_use:N \l__px_footer_left_tl \\
+\textbf{footer-center} & \tl_use:N \l__px_footer_center_tl \\
+\textbf{footer-right} & \tl_use:N \l__px_footer_right_tl \\
+\end{tabular}
+
+\bigskip
+%% -- P3CTeX / cover --
+\subsection*{P3CTeX / cover}
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{uppertitle} & \bool_if:NTF \l__pxcover_upper_title_bool {true}{false}\\
+\textbf{subtitle} & \bool_if:NTF \l__pxcover_subtitle_bool {true}{false}\\
+\textbf{subsubtitle} & \bool_if:NTF \l__pxcover_subsubtitle_bool {true}{false}\\
+\textbf{add-picture} & \bool_if:NTF \l__pxcover_image_bool {true}{false}\\
+\textbf{outter-backtitle} & \bool_if:NTF \l__pxcover_out_backtitle_bool {true}{false}\\
+\textbf{inner-backtitle} & \bool_if:NTF \l__pxcover_white_backtitle_bool {true}{false}\\
+\textbf{noplagi} & \bool_if:NTF \l__pxcover_noplagi_bool {true}{false}\\
+\textbf{offset} & \bool_if:NTF \l__pxcover_offset_bool {true}{false}\\
+\textbf{clip-author} & \bool_if:NTF \l__pxcover_clip_author_bool {true}{false}\\
+\textbf{unlink} & \bool_if:NTF \l__pxcover_unlink_bool {true}{false}\\
+\end{tabular}
+\PXfill	
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{cover-header-height}   & \the\l__pxcover_header_height \\
+\textbf{cover-subheader-height}& \the\l__pxcover_subheader_height \\
+\textbf{cover-body-height}     & \the\l__pxcover_body_height \\
+\textbf{cover-square-size}     & \the\l__pxcover_square_size \\
+\textbf{cover-em}             & \the\l__px_em \\
+\textbf{cover-font-max}       & \the\l__px_font_max \\
+\end{tabular}
+\medskip
+\par\noindent
+\begin{tabular}{@{}l@{\quad}l@{}}
+\textbf{text-backtitle}     & \tl_use:N \l__pxcover_backtitle_tl \\
+\textbf{text-uppertitle}    & \tl_use:N \l__pxcover_uppertitle_tl \\
+\textbf{text-title}         & \tl_use:N \l__pxcover_title_tl \\
+\textbf{text-minititle}     & \tl_use:N \l__pxcover_minititle_tl \\
+\textbf{text-subtitle}      & \tl_use:N \l__pxcover_subtitle_tl \\
+\textbf{text-subsubtitle}   & \tl_use:N \l__pxcover_subsubtitle_tl \\
+\textbf{text-author}        & \tl_use:N \l__pxcover_author_tl \\
+\textbf{text-date}          & \tl_use:N \l__pxcover_date_tl \\
+\textbf{text-auxtext}       & \tl_use:N \l__pxcover_aux_tl \\
+\textbf{set-mainpicture}    & \tl_use:N \l__pxcover_image_long_tl \\
+\textbf{set-auxpicture}     & \tl_use:N \l__pxcover_image_square_tl \\
+\textbf{maincolor}          & \l__pxcover_color_tl \\
+\textbf{auxcolor}           & \l__pxcover_aux_color_tl \\
+\textbf{textcolor}          & \l__pxcover_text_color_tl \\
+\textbf{textcolor-aux}      & \l__pxcover_text_aux_color_tl \\
+\textbf{bg-color}           & \l__pxcover_img_bg_tl \\
+\textbf{title-size}         & \tl_to_str:N \l__pxcover_title_size_tl \\
+\textbf{subtitle-size}      & \tl_use:N \l__pxcover_subtitle_size_tl \\
+\textbf{margin-h}           & \dim_use:N \l__pxcover_margin_h_tl \\
+\textbf{margin-v}           & \dim_use:N \l__pxcover_margin_v_tl \\
+\end{tabular}
+\par
+\clearpage
+}

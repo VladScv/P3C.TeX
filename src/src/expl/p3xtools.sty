@@ -1,0 +1,115 @@
+\ProvidesExplFile{p3xtools}{2025}{v0.1}{Tool macros for P3CTeX }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%  PEC.TeX  TOOLS        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%                        %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{../src/expl/p3x.loader} %TODO '../' added for test
+% -----------------------------------------
+%   PEC.TeX IMG :: Images Manager
+%   \PXimg
+% -----------------------------------------
+
+\cs_new_protected:Nn \__px_img_list:{\listof{images}{\tl_use:N \l__px_img_list_name_tl}}
+\newlistof{images}{img}{\tl_use:N \l__px_img_list_name_tl}
+
+\NewDocumentCommand{\addtoimages}{m m}{\addcontentsline{img}{images}{%
+		\footnotesize{\protect\numberline{\theimg}}\normalsize{\textbf{\thesubsubsection}\qquad}%
+		\normalsize{#1\space}\footnotesize{\texttt{[#2]}}}\par%
+}
+\newcounter{img}
+\renewcommand{\theimg}{\arabic{img}}
+\NewDocumentCommand{\PXimg}{s O{0.8} m m o}{%
+	% #1: width fraction [0.8 by default]
+	% #2: file name (no extension, from \images)
+	% #3: caption text
+	% #4: optional label text
+	\refstepcounter{img} %% increase counter
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=#2\linewidth]{\tl_use:N \l__px_img_path_tl #3}%
+		\IfNoValueTF{#5}{%
+			\caption*{\footnotesize{%
+					\IfBooleanTF{#1}{[\textbf{#3}]:}{\tl_use:N \l__px_img_name_tl(\arabic{img})\space}%
+				}\normalsize{\hspace{0.2em}#4}}
+			\label{img:#3}%
+			\addtoimages{#4}{#3}%
+		}{%
+			\caption*{\footnotesize{%
+					\IfBooleanTF{#1}{[\textbf{#5}]:}{\tl_use:N \l__px_img_name_tl(\arabic{img})\space}%
+				}\normalsize{\hspace{0.2em}#4}}
+			\label{img:#5}%
+			\addtoimages{#4}{#5}%
+		}%
+	\end{figure}%
+}
+
+% -----------------------------------------
+%   PEC.TeX SHOT :: Screenshot Manager
+%   \PXshot
+% -----------------------------------------
+
+\cs_new_protected:Nn \__px_shot_list:{\listof{screenshots}{\tl_use:N \l__px_shot_list_name_tl}}
+\newlistof{screenshots}{shot}{\tl_use:N \l__px_shot_list_name_tl}
+\NewDocumentCommand{\addtoscreenshots}{m m}{\addcontentsline{shot}{screenshots}{%
+		\footnotesize{\protect\numberline{\theshot}}\normalsize{\textbf{\thesubsubsection}\qquad}%  
+		\normalsize{#1\space}\footnotesize{\texttt{[#2]}}}\par%
+}
+\newcounter{shot}
+\renewcommand{\theshot}{\arabic{shot}}
+\NewDocumentCommand{\PXshot}{s O{0.8} m m o}{%
+	% #1: Optional boolean (if present, bolds caption)
+	% #2: Image width fraction (default 0.8)
+	% #3: File name (without extension)
+	% #4: Caption text
+	% #5: Optional custom label
+	\refstepcounter{shot} %% Increase counter
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=#2\linewidth]{\tl_use:N \l__px_shot_path_tl #3}%
+		\IfNoValueTF{#5}{%
+			\caption*{\footnotesize{%
+					\IfBooleanTF{#1}{[\textbf{#3}]:}{\tl_use:N \l__px_shot_name_tl(\arabic{shot})\space}%
+				}\normalsize{\hspace{0.2em}#4}}
+			\label{shot:#3}%
+			\addtoscreenshots{#4}{#3}%
+		}{%
+			\caption*{\footnotesize{%
+					\IfBooleanTF{#1}{[\textbf{#5}]:}{\tl_use:N \l__px_shot_name_tl(\arabic{shot})\space}%
+				}\normalsize{\hspace{0.2em}#4}}
+			\label{shot:#5}%
+			\addtoscreenshots{#4}{#5}%
+		}%  
+	\end{figure}%  
+}
+
+% -----------------------------------------
+%   PEC.TeX CODE :: Code Manager
+%   \PXcodefile
+% -----------------------------------------
+\cs_new_protected:Nn \__px_code_list:{\listof{codes}{\tl_use:N \l__px_code_list_name_tl}}
+\newlistof{codes}{code}{\tl_use:N \l__px_code_list_name_tl}
+\NewDocumentCommand{\addtocodes}{m m m}{\addcontentsline{code}{codes}{%
+		\footnotesize{\protect\numberline{\thecode}}\normalsize{\textbf{\thesubsubsection}\qquad}%  
+		\normalsize{#1\space}\footnotesize{\texttt{[#2]}}}\par%
+}
+\newcounter{code}
+\renewcommand{\thecode}{\arabic{code}}
+\NewDocumentCommand{\PXcodefile}{s O{Python} m m o}{%
+	% #1: Optional boolean (if present, bolds caption)
+	% #2: Language (default Python)
+	% #3: File name (without extension)
+	% #4: Caption text
+	% #5: Optional custom label
+	\refstepcounter{code} %% Increase counter
+	\begin{tcolorbox}[title={\tl_use:N \l__px_code_name_tl(\arabic{code}): #4}, colframe=UOCcyan, colback=gris]
+		\lstinputlisting[language=#2]{\tl_use:N \l__px_code_path_tl#3}
+	\end{tcolorbox}
+	\IfNoValueTF{#5}{%
+		\label{code:#3}%
+		\addtocodes{#4}{#3}{#2}%
+	}{%
+		\label{code:#5}%
+		\addtocodes{#4}{#5}{#2}%
+	}%
+}

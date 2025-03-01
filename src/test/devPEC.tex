@@ -1,0 +1,81 @@
+\documentclass[
+debug-values,
+cover= {
+	fullcover,
+	offset= true,
+	inner-backtitle=false,
+	outter-backtitle=true
+	  },
+cat = {toc-name = Patatas pata todos}, 
+data= {
+	alumne = {Vladimir Scvria},
+	titulacio = {Software},			
+	assignatura	= {Pràctiques de Procrastinació-Avançada en LaTeX},
+	assig-curt = {PPAL},
+	assig-codi = {01312456y},						
+	activitat = {Repte 1 Introducció a xpl3},
+	nomcurt = {PAC1},
+	date = {today}	
+	}	
+ ]{../P3CTeX}%% '../' added for test
+%
+
+%\PECTeX[px-cover]{uppertitle, set-uppertitle= Patatas pata Todos, set-minititle=PAC1}
+
+\begin{document}
+%	\PECTeXsetName{toc}{Patata}
+	
+	\section{Introducción a las Herramientas PECTeX}
+		
+		La clase PECTeX proporciona una serie de comandos personalizados diseñados para automatizar y simplificar tareas comunes en la creación de documentos académicos. Esta sección detalla los comandos principales y muestra ejemplos prácticos para cada uno.
+		\PXimg{pxTestIMG05}{Un grfico de ejemplo.}
+				A continuación, se explican los comandos divididos en dos categorías principales:
+		\begin{enumerate}
+			\item Gestión de Imágenes y Capturas.
+			\item Gestión de Variables Dinámicas.
+		\end{enumerate}
+		\subsection{Comandos para Imágenes y Capturas de Pantalla}
+			
+			Los comandos \texttt{\textbackslash PXshot} y \texttt{\textbackslash PXimg} permiten insertar imágenes y capturas de pantalla de forma rápida y ordenada. Además, se genera automáticamente un índice para referenciar estas imágenes en el documento.
+			\begin{itemize}
+				\item PXshot: Inserta capturas de pantalla desde la carpeta \texttt{screenshots}.
+				\item PXimg: Inserta imágenes desde la carpeta \texttt{images}.
+			\end{itemize}
+			\subsubsection{Ejemplos de Uso}
+			
+			\textbf{Capturas de Pantalla:}
+			\begin{verbatim}
+				\PXshot{captura}{Una captura de pantalla.}
+				\PXshot[0.5]{captura}{Una captura más pequeña.}
+			\end{verbatim}
+			
+			\PXshot{captura}{Una captura de pantalla.} 
+			\PXshot[0.5]{captura}{Una captura más pequeña.}			
+			\textbf{Imágenes Genéricas:}
+			\begin{verbatim}
+				\PXimg{grafico}{Un gráfico de ejemplo.}
+				\PXimg[0.6]{grafico}{Un gráfico más pequeño.}
+			\end{verbatim}
+			
+			\PXimg{pxTestIMG01}{Un grafico de ejemplo.} 
+			\PXimg*[0.6]{pxTestIMG02}{Un gráfico más pequeño.}
+			
+			\PXimg*{pxTestIMG03}{Un grafico de ejemplo.} 
+			\PXimg{pxTestIMG04}{Un grafico de ejemplo.} 
+			\textbf{Índices Automáticos:}
+			Para generar los índices de capturas y gráficos, se utilizan:
+			\begin{verbatim}
+				\listofscreenshots
+				\listofimages-
+			\end{verbatim}
+			
+		\newpage
+		
+%		\PECTeXsetKey{alumne}{Patata}
+		\listofscreenshots
+		\listofimages
+		 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Override a specific term manually
+
+
+\end{document}
